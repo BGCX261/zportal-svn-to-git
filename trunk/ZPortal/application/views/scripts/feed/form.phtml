@@ -1,0 +1,81 @@
+<?php
+
+/**
+ * Zend Portal
+ *
+ * LICENSE
+ *
+ * This source file is subject to the new BSD license that is bundled
+ * with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://framework.zend.com/license/new-bsd
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@zend.com so we can send you a copy immediately.
+ *
+ * @category   Zend
+ * @copyright  Copyright (c) 2005-2007 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @author 
+ */
+ 
+echo '<?xml version="1.0" encoding="UTF-8" ?>';
+?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title><?php if ($this->isNew): ?>Add<?php else: ?>Edit<?php endif ?> <?php if ($isGroup = $this->type =='group'): ?>Group<?php else: ?>Feed<?php endif ?></title>
+</head>
+
+<body>
+	<?php $form = $this->form('add', null, 'post'); echo $form->open() ?>
+	<h1><?php if ($this->isNew): ?>Add<?php else: ?>Edit<?php endif ?> <?php if ($isGroup): ?>Group<?php else: ?>Feed<?php endif ?></h1>
+	<?php
+	    if($this->message) :
+	    if (is_array($this->message)) {
+	        foreach ($this->message as $part) {
+	            $message .= implode('<br>', $part);    
+	        }	        
+	    } else {
+	        $message = $this->message;
+	    }
+	?> 	    
+	<h3><?php echo $message ?></h3>
+	<?php endif ?>
+	<!-- form method="post" -->
+    <table>
+    <tr>
+        <th>Name:</th>
+        <td><?php echo $this->formText('name', $this->name) ?></td>
+    </tr>
+	<tr>
+		<th>Description:</th>
+		<td><?php echo $this->formTextarea('description', $this->description, array('rows' => 5)) ?></td>
+	</tr>
+	<?php if (!$isGroup): ?>
+	<tr>
+		<th>URL:</th>
+		<td><?php echo $this->formText('url', $this->url) ?></td>
+	</tr>
+	<?php endif ?>
+	<?php if ($this->isNew || $this->group_id): ?>
+	<tr>
+		<th>Parent Group:</th>
+		<td><?php echo $this->formSelect('group_id', $this->group_id, null, $this->groups) ?></td>
+	</tr>
+	<?php endif ?>
+	<tr>
+		<td></td>
+		<td><?php echo $this->formSubmit('submit', $this->isNew ? 'Add' : 'Commit') ?></td>
+	</tr>
+    </table>
+	<?php if ($isGroup): ?>
+    <?php echo $this->formHidden('url', '') ?>
+	<?php endif ?>
+	<?php echo $form->close() ?>
+</body>
+</html>
+

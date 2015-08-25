@@ -1,0 +1,197 @@
+<?php if ($this->status) { echo $this->status; die(); } ?>
+<?php
+/**
+ * Zend Portal
+ *
+ * LICENSE
+ *
+ * This source file is subject to the new BSD license that is bundled
+ * with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://framework.zend.com/license/new-bsd
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@zend.com so we can send you a copy immediately.
+ *
+ * @category   Zend
+ * @copyright  Copyright (c) 2005-2007 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @author 
+ */
+$baseUrl = $this->baseUrl
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta name="description" content="ZPortal is your personalized Zend Protal. Add news, photos, and stuff from across the company to your portal.">
+<link rel="shortcut icon" href="http://www.zend.com/img/favicon.ico" type="image/x-icon" />
+<link rel="icon" href="http://www.zend.com/img/favicon.ico" type="image/x-icon" />
+<title>Zend Portal</title>
+<link href="<?php echo $baseUrl ?>/css/zportal.css" rel="stylesheet" type="text/css"/>
+<link href="<?php echo $baseUrl ?>/css/account.css" rel="stylesheet" type="text/css"/>
+<link href="<?php echo $baseUrl ?>/css/validation.css" rel="stylesheet" type="text/css"/>
+<script language="javascript" src="<?php echo $baseUrl ?>/js/prototype.js"></script>  
+<script language="javascript" src="<?php echo $baseUrl ?>/js/validation.js"></script>
+<script language="javascript" src="<?php echo $baseUrl ?>/js/query.js"></script>
+<script language="javascript" src="<?php echo $baseUrl ?>/js/subscribe.js?baseUrl=<?php echo $this->escape($this->url(array(), null, true)) ?>"></script>  
+</head>
+
+<body>
+<div id=gbarl></div>
+<div align=right>
+<div align=right id=guser style="font-size: 84%; padding: 0 0 4px" width=100%><nobr><b><?php echo $this->user['email'] ?></b> | 
+	<a href="/portal/about">About</a> | 
+	<a href="<?php echo $this->url(array('controller' => 'portal', 'action' => 'public'), null, true) ?>">Public Portal</a> | 
+	<a href="<?php echo $this->url(array('controller' => 'portal', 'action' => 'view'), null, true) ?>">Personal Portal </a> | 
+	<a href="<?php echo $this->url(array('controller' => 'auth', 'action' => 'logout'), null, true) ?>">Sign out</a>
+</nobr>
+</div>
+</div>
+
+<div id="backhome"></div>
+<div id="header">
+<div class="header_title">Add feeds to your portal
+</div>
+</div>
+<div id="container">
+<ul id="nav">
+	<li class="navhead">Path</li>
+	<li class="selected"><?php
+    	if (! $this->parents) {
+    	    ?> &raquo; <?php
+    	} else {
+        	foreach ($this->parents as $id => $name) {
+        	    ?> &raquo;  <?php
+        	    $url = $this->url(array('feedId' => $id));
+        	    echo sprintf('<a href="%s" title="%s">%2$s</a>', $url, $this->escape($name == 'ROOT' ? '/' : $name));
+        	}
+        }
+    	?>
+	</li><li class="selected"></li>
+	<li class="navhead">Groups</li>
+    <?php
+    	foreach ($this->groups as $group) {
+    	    ?><li><?php
+    	    $url = $this->url(array('feedId' => $group['id']));
+    	    echo sprintf('<a href="%s" title="%s">%2$s</a>', $url, $this->escape($group['name']));
+    	    ?></li><?php
+    	}
+    ?>
+	<li class="cat">
+		<div class="feed">Propose 
+			<span id="adv_link" class="linkon" onclick="proposeMenu('advanced_feed');">Feed</span> or 
+			<span id="adv_link" class="linkon" onclick="proposeMenu('advanced_group');">Group</span>			
+		</div>
+		<div id="advanced_feed" style="display:none">
+			<form id='add-feed' method="post" name="advd_feed" action="<?php echo $this->url(array('controller' => 'feed', 'action' => 'add', 'type' => 'feed', 'group_id' => $this->groupId), null, true) ?>">
+			<div><a class="delbox" onclick="proposeMenu('advanced_feed');"></a></div>
+			<div>
+				<span id='nav'>Name:</span><input id="add_name" class="required" maxlength="50" name="name" size="15" /><br/>
+				<span id='nav'>Description:</span><input id="add_description" class="required" maxlength="200" name="description" size="30" /><br/>
+				<span id='nav'>URL:</span><input id="add_url" class="required validate-url" maxlength="255" name="url" size="30" value="http://" /><br/><br/>
+				<input id="subscribe_me" name="subscribe_me" type="checkbox" checked="checked"/>Subscribe me!<br/>
+				<input type="submit" value="Add"/></div>
+			</form>
+			<script type="text/javascript">
+     			new Validation('add-feed'); 
+			</script>
+		</div>
+		<div id="advanced_group" style="display:none">
+			<form id='add-group' method="post" name="advd_group" action="<?php echo $this->url(array('controller' => 'feed', 'action' => 'add', 'type' => 'group', 'group_id' => $this->groupId), null, true) ?>">
+			<div><a class="delbox" onclick="proposeMenu('advanced_group');""></a></div>
+			<div>
+				<span id='nav'>Name:</span><input id="add_name" class="required" maxlength="50" name="name" size="15" /><br/>
+				<span id='nav'>Description:</span><input id="add_description" class="required" maxlength="200" name="description" size="30" /><br/>
+				<input type="submit" value="Add" /></div>
+			</form>
+			<script type="text/javascript">
+     			new Validation('add-group'); 
+			</script>
+		</div>
+	</li>
+</ul>
+
+<div id="main">
+
+<?php foreach ($this->feeds as $feed) : ?>
+    <div class="first directory-entry">
+    	<div class="gadget">
+
+    	    <?php $add = $this->subscription[$feed['id']] ?>
+    	
+    		<div id="addbtn<?php echo $feed['id'] ?>" class="hand">
+    			<input type="button" style="display:<?php echo ($add ? "block" : "none") ?>;" value="Add it now"  onclick="subscribe.subscribe(<?php echo $feed['id'] ?>);"/>
+    		</div>
+    		
+    		<div id="added<?php echo $feed['id'] ?>" style="display:<?php echo ($add ? "none" : "block") ?>;" class="added fixedwidth">
+    			<div class="check">Added</div>
+    		</div>
+    	</div>
+    	<div class="author">
+    		<p>By <?php echo $feed['owner_id']?>@zend.com</p>
+    		<p>10 users</p>
+    	</div>
+    	<div class="info">
+    		<p><a id="title<?php echo $feed['id'] ?>" href="<?php echo $this->escape($feed['url']) ?>" name="Nk" class="headlink"><?php echo $this->escape($feed['name']); ?></a></p>
+    		<p><?php echo $this->escape($feed['description']) ?></p>
+    	</div>
+    </div>
+<?php endforeach; ?>
+<!-- 
+<div class="first directory-entry">
+	<div class="gadget">
+		<div id="addbtn0" class="hand" onclick="toggleAdd('0','Nk','n_32\x3durl%3Dhttp://members.aol.com/markjson/calendar.xml');">
+			<input type="button" value="Add it now" />
+		</div>
+		<div id="added0" class="added fixedwidth">
+			<div class="check">Added</div>
+		</div>
+	</div>
+	<div class="author">
+		<p>By name@zend.com</p>
+		<p>10 users</p>
+	</div>
+	<div class="info">
+		<p><a id="title0" href="http://www.google.com/ig/directory?hl=en&amp;root=/ig&amp;igtab=WebDev&amp;dpos=top&amp;url=http://members.aol.com/markjson/calendar.xml" name="Nk" class="headlink">1st Feed Name</a></p>
+		<p>Feed description.</p>
+	</div>
+</div>
+ -->
+
+</div>
+</div>
+<!-- 
+<div id="bottom">
+<p class="pagelinks">Pages: <b class="current">1</b> <a
+	href="/list/start/7">2</a>
+<a
+	href="/list/start/14">3</a>
+<a
+	href="/list/start/21">4</a>
+<a
+	href="/list/start/28">5</a>
+<a
+	href="/list/start/35">6</a>
+<a
+	href="/list/start/42">7</a>
+<a
+	href="/list/start/49">8</a>
+<a
+	href="/list/start/56">9</a>
+<a
+	href="/list/start/63">10</a>
+<a
+	href="/list/start/7"><b>Next &gt;</b></a></p>
+</div>
+ -->
+<div id="footer">
+<p class="fineprint">Legal comments</p>
+<p class="center">
+<br>
+<span class="copyr">&copy;2007 Zend</span></p>
+</div>
+</body>
+</html>
+
+

@@ -1,0 +1,26 @@
+INSTALLATION
+------------
+Zend Portal requires... 
+# TODO: installation of zend framework, database, core, etc.  
+
+
+SYSTEM REQUIREMENTS
+-------------------
+Zend Portal is built with object-oriented PHP 5 and requires
+Zend Framework 1.0.2 or later. Please see the system requirements appendix for
+more detailed information: http://framework.zend.com/manual/en/requirements.html
+
+
+GETTING ZEND PORTAL
+----------------------
+Zend Portal is residen on SVN server at the following locatrion:
+	https://il-cms1.zend.net/svn/Zend/InternalTools/ZendPortal
+to checkout use the following commandline:
+	svn co https://il-cms1.zend.net/svn/Zend/InternalTools/ZendPortal/trunk ZendPortal
+
+write privalage are for Zend Portal development members only, to gain write permission, please advice product manager.
+
+
+USING ZEND PORTAL
+--------------------
+# TODO: How to use 

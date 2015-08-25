@@ -1,0 +1,94 @@
+
+<?php
+
+/**
+ * Zend Portal
+ *
+ * LICENSE
+ *
+ * This source file is subject to the new BSD license that is bundled
+ * with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://framework.zend.com/license/new-bsd
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@zend.com so we can send you a copy immediately.
+ *
+ * @category   Zend
+ * @copyright  Copyright (c) 2005-2007 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @author 
+ */
+
+echo '<?xml version="1.0" encoding="UTF-8" ?>';
+?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+
+<form name="addChannel" action="add" accept-charset="UTF-8"
+	accept="text/html" method="post">
+<table width="658px">
+	<tbody>
+		<tr>
+			<td align="left">Title</td>
+			<td align="left"><?php
+			echo $this->formText('title', '', array('size'=>'64'));
+			?></td>
+		</tr>
+		<tr>
+			<td/>
+			<td>
+			<table width="658px">
+				<tbody>
+					<tr>
+						<td align="left">Copyright</td>
+						<td align="left"><?php
+						echo $this->formText('copywrite', 'Zend Tecnologies', array('size'=>'64', 'maxlength'=>'255'))?></td>
+					</tr>
+					<tr>
+						<td align="left" valign="top">Description</td>
+						<td align="left"><?php
+						echo $this->formTextarea('description', '', array('rows'=>'10', 'cols'=>'83'))?></td>
+					</tr>
+					<tr>
+						<td align="left">Category</td>
+						<td align="left"><?php
+						echo $this->formText('category', '', array('size'=>'64'))?></td>
+					</tr>
+					<tr>
+						<td align="left">Time To Live</td>
+						<td align="left"><?php
+						echo $this->formText('ttl', '0', array('size'=>'5', 'maxlength'=>'5'))?></td>
+					</tr>
+				</tbody>
+			</table>
+			</td>			
+		</tr>		
+		<?php
+		if(  !empty($this->errMsg)) {
+			?>
+		<tr>
+			<td align="left"><?php
+			echo $this->formLabel('errMsg', $this->errMsg)?></td>
+		</tr> 
+		<?php
+		}
+		?>
+	</tbody>
+</table>
+<?php
+echo $this->formSubmit('submit', 'submit')?>
+
+<?php
+echo $this->formButton('cancle', 'cancel') ?>
+</form>
+
+</body>
+</html>

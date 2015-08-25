@@ -1,0 +1,59 @@
+<?php
+/**
+ * Zend Portal
+ *
+ * LICENSE
+ *
+ * This source file is subject to the new BSD license that is bundled
+ * with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://framework.zend.com/license/new-bsd
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@zend.com so we can send you a copy immediately.
+ *
+ * @category   Zend
+ * @copyright  Copyright (c) 2005-2007 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @author 
+ */
+
+// this is a partial view
+$feed = $this->feed;
+if (! $feed || !$feed['items']) {
+    echo "<I>Feed is not available... try again later</I>";
+} else {
+    $j = 0;    
+    ?>
+
+<script>var FEED<?php echo $feed['id'] ?> = {has_entries : false,is_fetching: false,url:"<?php echo $feed['url'] ?>",num_items:5};</script>
+
+<?php foreach($feed['items'] as $items): ?>
+    <?php foreach($items as $item): ?>
+	    <?php
+        if ($j > 5) break;
+	    $link = $item->realLink();
+        $title = $this->escape($item->title());
+        $content = $item->content() ? $item->content() : $item->description();
+        $feedId= $feed['id'];
+        $identify = $feedId . "_" . $j;        
+        ?>
+<!-- sftl - open  , uftl - close -->
+
+<DIV class="uftl" id="ftl_<?php echo $identify ?>">
+	<A onclick="itemHandler.expand(<?php echo $feedId . ", " . $j ?>)" class="fmaxbox" id="ft_<?php echo $identify ?>" href="javascript:void(0)"/>
+	<A target="_blank" href="<?php echo $link ?>">
+		<?php echo $title ?>
+	</A>
+	<BR/>
+	<DIV style="display: none; max-height: 283.5px;" id="fb_<?php echo $identify ?>" class="fpad">
+			<?php echo $content ?>
+	</DIV>
+</DIV>    
+    
+    <?php  $j++; endforeach ?>
+<?php endforeach ?>
+
+<?php
+}
+?>

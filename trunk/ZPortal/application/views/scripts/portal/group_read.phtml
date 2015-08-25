@@ -1,0 +1,39 @@
+<?php
+/**
+ * Zend Portal
+ *
+ * LICENSE
+ *
+ * This source file is subject to the new BSD license that is bundled
+ * with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://framework.zend.com/license/new-bsd
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@zend.com so we can send you a copy immediately.
+ *
+ * @category   Zend
+ * @copyright  Copyright (c) 2005-2007 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @author 
+ */
+
+// this is a partial view
+$feed = $this->feed;
+$j = 0;
+?>
+
+<p><a href="<?php echo $this->url(array('feedId'=>$feed['id'], 'action' => 'view')) ?>"><?php echo $feed['name'] ?></a></p>
+<ul>
+<?php foreach($feed['items'] as $items): ?>
+    <?php foreach($items as $item): ?>
+        <li id = "item_<?php echo $feed['id'] ?>_<?php echo $j ?>">
+            <p class="item_title">
+            <a class="item_expand"   style="display:none" href="javascript:void(0)">[+]</a>
+            <a class="item_collapse" style="display:none" href="javascript:void(0)">[--]</a>
+            <?php if ($item->parentName()!=$feed['name']): ?><?php echo $item->parentName() ?>: <?php endif ?><?php $title = ($link = $item->realLink()) ? sprintf('<a href="%s">%s</a>', $link, $this->escape($item->title())) : $this->escape($item->title()); echo $title ?></p>
+            <div style="display:none" class="item_content"><?php echo $item->content() ? $item->content() : ($item->description() ? $item->description() : $item->summary()) ?></div>
+        </li>
+    <?php  $j++; endforeach ?>
+<?php endforeach ?>
+</ul>

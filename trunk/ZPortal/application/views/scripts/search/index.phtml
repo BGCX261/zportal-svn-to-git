@@ -1,0 +1,134 @@
+<?php
+/**
+ * Zend Portal
+ *
+ * LICENSE
+ *
+ * This source file is subject to the new BSD license that is bundled
+ * with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://framework.zend.com/license/new-bsd
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@zend.com so we can send you a copy immediately.
+ *
+ * @category   Zend
+ * @copyright  Copyright (c) 2005-2007 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @author 
+ */
+echo '<?xml version="1.0" encoding="UTF-8" ?>';
+$baseUrl = $this->baseUrl();
+?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="description" content="ZPortal is your personalized Zend Protal. Add news, photos, and stuff from across the company to your portal."/>
+	<link rel="icon" href="http://www.zend.com/img/favicon.ico" type="image/x-icon" />
+	<link rel="shortcut icon" href="http://www.zend.com/img/favicon.ico" type="image/x-icon"/>
+	<title>Zend Portal</title>	
+	<link rel="stylesheet" type="text/css" href="<?php $baseUrl ?>/css/grids.css" />
+    <script language="javascript" src="<?php echo $baseUrl ?>/js/prototype.js"></script>  
+    <script language="javascript" src="<?php echo $baseUrl ?>/js/query.js"></script>
+	<script language="javascript" src="<?php echo $baseUrl ?>/js/subscribe.js?baseUrl=<?php echo $this->escape($this->url(array(), null, true)) ?>"></script>  
+	<link href="<?php echo $baseUrl ?>/css/zportal.css" rel="stylesheet" type="text/css"/>
+	<link href="<?php echo $baseUrl ?>/css/account.css" rel="stylesheet" type="text/css"/>	
+</head>
+
+<body>
+    <div id=gbarl></div>
+    <div align=right>
+    <div align=right id=guser style="font-size: 84%; padding: 0 0 4px" width=100%><nobr><b><?php echo $this->user['email'] ?></b> | 
+    	<a href="<?php echo $this->url(array('controller' => 'auth', 'action' => 'logout'), null, true) ?>">About</a> | 
+    	<a href="<?php echo $this->url(array('controller' => 'portal', 'action' => 'public'), null, true) ?>">Public Portal</a> |
+   	 	<a href="<?php echo $this->url(array('controller' => 'portal', 'action' => 'view'), null, true) ?>">Personal Portal </a> | 
+    	<a href="<?php echo $this->url(array('controller' => 'portal', 'action' => 'subscribe'), null, true) ?>">My Account</a> | 
+    	<a href="<?php echo $this->url(array('controller' => 'auth', 'action' => 'logout'), null, true) ?>">Sign out</a>
+    </nobr>
+    </div>
+    </div>
+
+    <div id="doc3">
+    <div id="nhdrwrap">
+    <div id="nhdrwrapinner">
+    <div id="nhdrwrapsizer">
+    <div id="gsea">
+    <form id="sfrm" name="f" method="get" action="<?php echo $this->url(array('controller' => 'search', 'action' => 'index'), null, true) ?>">
+    <table cellpadding="0" cellspacing="0">
+    	<tr>
+    		<td valign="top" class="gsealog">
+    			<div id="regular_logo">&nbsp;</div>
+    		</td>
+    		<td align="center" class="gseain" valign="top" nowrap>
+    		<br/>
+    		<input type="text" name="q" id="q" size="55" maxlength="2048" value="<?=isset($this->query) ? $this->escape($this->query) : ''?>"><br>
+    		<input type="submit" value="Feed Search" name="btnG" id="btnG">
+    		<input type="submit" value="Web Search" name="btnI" id="btnI"><br>
+    		</td>
+    		<td valign="top"><br>
+    		<p class="gseaopt"></p>
+    		</td>
+    	</tr>
+    	<tr>
+    		<td align="center" colspan=3></td>
+    	</tr>
+    </table>
+    </form>
+    </div>
+    </div>
+    </div>
+    </div>
+    
+    <div align=right style="padding: 0 0 0px; margin-right: 28px"> 
+    	<b><a href="<?php echo $this->url(array('controller' => 'portal', 'action' => 'subscribe'), null, true) ?>">Add stuff &raquo;</a></b>
+    </div>
+    
+    <div id="modules">
+    <div class="yui-b">
+    <div class="yui-gb" id="t_1">
+        <?php if (isset($this->results) && ! empty($this->results)): ?>
+            <div class="results">
+
+				<?php foreach ($this->results as $hit) : ?>
+				    <div class="first directory-entry">
+				    	<div class="gadget">
+				    		<div id="addbtn<?php $hit->id ?>" class="hand">
+				    			<input type="button" style="display:block" value="Add it now"  onclick="subscribe.subscribe(<?php echo $hit->id ?>);"/>
+				    		</div>
+				    	</div>
+				    	<div class="info">
+				    		<p><a id="title<?php echo $hit->id ?>" href="<?php echo $this->escape($hit->url) ?>" name="Nk" class="headlink"><?php echo $this->escape($hit->title); ?> ( <?= sprintf("%0.2f", $hit->score * 100) ?>% )</a></p>
+				    	</div>
+				    </div>
+
+				<?php endforeach; ?>    			
+<!--  
+//    			<ul>
+//                    <?php foreach($this->results as $hit): ?>
+//                    <li><a href="<?= $hit->url ?>">
+//                        <?= $this->escape($hit->title) ?> 
+//                        <?= sprintf("%0.2f", $hit->score * 100) ?>%
+//                    </li>
+//                    <?php endforeach; ?>
+//                </ul>
+ -->
+			</div>
+        <?php endif; ?>
+    </div>
+    </div>
+    </div>
+    </div>
+    
+    <div id="footerwrap">
+    <div id="footerwrapinner">
+    <p id="footer_promos"><span class="bold_link_container">
+    <a href="http://www.google.com/ig/gmchoices?hl=en">Link goes here</a>
+     and more details here</span><br>
+    <br>
+    <span class="copyr">&copy;2007 Zend</span></p>
+    </div>
+    </div>
+</body>
+</html>
